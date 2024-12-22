@@ -1,155 +1,163 @@
 /* Algemene styling */
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #f8f1e9;
-  color: #4a4a4a;
-  margin: 0;
-  padding: 0;
-  text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-header {
-  text-align: center;
-  padding: 20px;
+.container {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+    overflow-y: auto; /* Voorkom dat de inhoud uit het scherm valt */
 }
 
-.logo {
-  width: 120px;
-  margin-bottom: 10px;
+/* Koppen */
+h1 {
+    color: #9c1925;
+    font-size: 2.5em;
+    margin-bottom: 10px;
 }
 
-.title {
-  font-family: 'Lust Script', serif;
-  font-size: clamp(2.5rem, 5vw, 3rem);
-  color: #9c1925;
+h2 {
+    color: #555;
+    font-size: 1.8em;
+    margin-bottom: 15px;
 }
 
-.subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #333333;
+/* Intro tekst */
+#intro-text {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    color: #666;
 }
 
-/* Progressiebalk */
-#progress-bar {
-  width: 90%;
-  max-width: 600px;
-  height: 20px;
-  background-color: #e6ded0;
-  border-radius: 10px;
-  margin: 20px auto;
+/* Tekstvelden en dropdowns */
+textarea, select {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#progress {
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, #e63946, #f4a261);
-  transition: width 0.5s ease;
+textarea:focus, select:focus {
+    border-color: #9c1925;
+    outline: none;
 }
 
-/* Spelbord */
-#game-board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin: 20px auto;
-  max-width: 800px;
-  padding: 10px;
+/* Knoppen */
+.btn {
+    padding: 12px 20px;
+    margin: 10px;
+    background-color: #9c1925;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.card {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 10px;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  cursor: pointer;
+.btn:hover {
+    background-color: #b3212f;
+    transform: scale(1.05);
 }
 
-.card.flipped {
-  transform: rotateY(180deg);
+.reset-btn {
+    background: #f39c12;
 }
 
-.card.matched {
-  animation: glow 0.5s ease;
-  background-color: #e6ded0;
-  cursor: default;
+.reset-btn:hover {
+    background: #e67e22;
 }
 
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 1);
-  }
+/* Secties */
+.section.hidden {
+    display: none;
 }
 
-/* Kaart voorkant */
-.card .front {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 10px;
-  background-size: cover;
-  background-position: center;
-  object-fit: cover;
+.section {
+    margin-bottom: 20px;
 }
 
-/* Kaart achterkant */
-.card .back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  transform: rotateY(180deg);
-  background-color: #9c1925;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
+/* Samenvatting stijl */
+#emotion-summary {
+    text-align: left;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Herstartknop styling */
-#restart-btn,
-#restart-btn-end {
-  margin-top: 20px;
-  padding: 15px 25px;
-  background-color: #e63946;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: bold;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.3s ease;
+#emotion-summary h2 {
+    color: #9c1925;
 }
 
-#restart-btn:hover,
-#restart-btn-end:hover {
-  transform: scale(1.1);
-  background-color: #d62839;
+/* Responsieve layout */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+
+    textarea, select {
+        font-size: 1em;
+    }
 }
 
-/* Eindscherm */
-#end-screen {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
+/* Progressie-indicator styling */
+#progress-indicator {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-#end-screen h2 {
-  color: #e63946;
-  font-size: 2rem;
+#progress-indicator span {
+    font-weight: bold;
+    color: #9c1925;
+}
+
+/* Analyse styling */
+#summary-description {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Activiteit Indicatoren */
+#check-in-text, #check-out-text {
+    height: 150px;
+    resize: vertical;
+}
+
+/* Boodschap bij succes of waarschuwing */
+.error-message {
+    color: red;
+    font-size: 1.1em;
+    margin-top: 20px;
 }
