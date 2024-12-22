@@ -1,110 +1,140 @@
-const cardsData = [
-  { id: 1, pairId: 1, bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale" },
-  { id: 2, pairId: 1, bg: "kersticon.png", content: "2" },
-  { id: 3, pairId: 2, bg: "kersticon.png", content: "🎄 + 🧦" },
-  { id: 4, pairId: 2, bg: "kersticon.png", content: "La mattina di Natale" },
-  { id: 5, pairId: 3, bg: "kersticon.png", content: "👵 + 🧹" },
-  { id: 6, pairId: 3, bg: "kersticon.png", content: "La Befana" },
-  { id: 7, pairId: 4, bg: "kersticon2.png", content: "Santo Stefano + La Befana" },
-  { id: 8, pairId: 4, bg: "kersticon2.png", content: "32" },
-  { id: 9, pairId: 5, bg: "kersticon2.png", content: "Natale - Capodanno" },
-  { id: 10, pairId: 5, bg: "kersticon2.png", content: "24" },
-  { id: 11, pairId: 6, bg: "kersticon2.png", content: "Compleanno del vostro insegnante" },
-  { id: 12, pairId: 6, bg: "kersticon2.png", content: "3 di gennaio" },
-  { id: 13, pairId: 7, bg: "kersticon2.png", content: "🎅 + 🎁" },
-  { id: 14, pairId: 7, bg: "kersticon2.png", content: "Babbo Natale" },
-  { id: 15, pairId: 8, bg: "kersticon2.png", content: "🎆 + 🥂" },
-  { id: 16, pairId: 8, bg: "kersticon2.png", content: "Capodanno" },
-  { id: 17, pairId: 9, bg: "kersticon2.png", content: "San Silvestro - Natale" },
-  { id: 18, pairId: 9, bg: "kersticon2.png", content: "6" },
-  { id: 19, pairId: 10, bg: "kersticon2.png", content: "🎁 + 🎟️" },
-  { id: 20, pairId: 10, bg: "kersticon2.png", content: "La Tombola di Natale" }
-];
+document.addEventListener("DOMContentLoaded", () => {
+    const totalDays = 14;
+    let currentDay = 1;
+    let reflections = {}; // Opslag voor reflecties per dag
 
-let flippedCards = [];
-let matchedPairs = 0;
-let boardLocked = false;
+    // Herstellen van de opgeslagen voortgang in localStorage
+    if (localStorage.getItem('currentDay')) {
+        currentDay = parseInt(localStorage.getItem('currentDay'));
+        reflections = JSON.parse(localStorage.getItem('reflections')) || {};
+    }
 
-function setupGame() {
-  const shuffledCards = shuffle([...cardsData]);
-  const gameBoard = document.getElementById("game-board");
-  gameBoard.innerHTML = "";
-  document.getElementById("progress").style.width = "0%";
-  flippedCards = [];
-  matchedPairs = 0;
-  boardLocked = false;
+    // Secties ophalen
+    const sections = {
+        checkIn: document.getElementById("check-in-section"),
+        analysis: document.getElementById("analysis-section"),
+        emotionSummary: document.getElementById("emotion-summary"),
+        exercise: document.getElementById("exercise-section"),
+        checkOut: document.getElementById("check-out-section"),
+        sleep: document.getElementById("sleep-section"),
+    };
 
-  shuffledCards.forEach(createCard);
-}
+    // Knoppen ophalen
+    const buttons = {
+        checkIn: document.getElementById("check-in-btn"),
+        emotionSubmit: document.getElementById("emotion-submit"),
+        proceedToExercise: document.getElementById("proceed-to-exercise"),
+        completeExercise: document.getElementById("complete-exercise-btn"),
+        checkOut: document.getElementById("check-out-btn"),
+        nextDay: document.getElementById("next-day-btn"),
+        prevDay: document.getElementById("prev-day-btn"),
+        reset: document.getElementById("reset-btn"),
+    };
 
-function createCard(cardData) {
-  const card = document.createElement("div");
-  card.classList.add("card");
+    // Reflectie prompts voor 14 dagen
+    const reflectionPrompts = [
+        "Hoe voel je je vandaag? Wat overheerst er in je lichaam?",
+        "Herken je een emotie vandaag? Waar voel je deze in je lichaam?",
+        "Welke situatie bracht stress vandaag? Hoe voel je je daarover?",
+        "Wat maakt je blij vandaag? Hoe merk je dat in je lichaam?",
+        "Ben je ergens boos over? Waar voel je dat in je lichaam?",
+        "Wat maakt je onzeker vandaag? Wat zegt je lichaam hierover?",
+        "Welke emoties heb je vandaag ervaren? Waar in je lichaam merk je deze?",
+        "Voel je ergens spanning? Hoe kun je deze spanning loslaten?",
+        "Wat heeft je gelukkig gemaakt? Hoe voelde je dat in je lichaam?",
+        "Wat zou je vandaag willen veranderen in je reacties op emoties?",
+        "Welke lichamelijke sensaties merk je? Wat zeggen ze over je emotie?",
+        "Wat is je grootste uitdaging op dit moment? Hoe voelt dat lichamelijk?",
+        "Heb je je vandaag ontspannen? Wat zou je willen verbeteren?",
+        "Hoe zou je jezelf vandaag kunnen steunen in het omgaan met emoties?"
+    ];
 
-  const front = document.createElement("div");
-  front.classList.add("front");
-  front.style.backgroundImage = `url(${cardData.bg})`;
+    // Functie om secties te tonen
+    const showSection = (id) => {
+        Object.values(sections).forEach(section => section.classList.add("hidden"));
+        sections[id].classList.remove("hidden");
+    };
 
-  const back = document.createElement("div");
-  back.classList.add("back");
-  back.textContent = cardData.content;
+    // Sla de voortgang op in localStorage
+    const saveProgress = () => {
+        localStorage.setItem('currentDay', currentDay);
+        localStorage.setItem('reflections', JSON.stringify(reflections));
+    };
 
-  card.appendChild(front);
-  card.appendChild(back);
-  document.getElementById("game-board").appendChild(card);
+    // Laad de inhoud voor de dag
+    const loadDayContent = () => {
+        document.getElementById("check-in-prompt").textContent = reflectionPrompts[currentDay - 1];
+        document.getElementById("day-number").textContent = currentDay;
+    };
 
-  card.addEventListener("click", () => flipCard(card, cardData));
-}
+    // Check-in button handler
+    buttons.checkIn.addEventListener("click", () => {
+        const input = document.getElementById("check-in-text").value.trim();
+        if (!input) return alert("Vul je reflectie in.");
+        reflections[currentDay] = { checkIn: input };
+        saveProgress();
+        showSection("analysis");
+    });
 
-function flipCard(card, cardData) {
-  if (boardLocked || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+    // Emotie analyse button handler
+    buttons.emotionSubmit.addEventListener("click", () => {
+        const selectedEmotions = Array.from(document.getElementById("emotion-select").selectedOptions).map(option => option.value);
+        const selectedBodyParts = Array.from(document.getElementById("body-select").selectedOptions).map(option => option.value);
+        
+        reflections[currentDay].emotions = selectedEmotions;
+        reflections[currentDay].bodyParts = selectedBodyParts;
+        saveProgress();
+        showSection("emotion-summary");
+    });
 
-  card.classList.add("flipped");
-  flippedCards.push({ card, cardData });
+    // Ga naar de oefening sectie
+    buttons.proceedToExercise.addEventListener("click", () => {
+        showSection("exercise");
+    });
 
-  if (flippedCards.length === 2) {
-    boardLocked = true;
-    setTimeout(checkMatch, 800);
-  }
-}
+    // Voltooi de oefening
+    buttons.completeExercise.addEventListener("click", () => {
+        showSection("check-out");
+    });
 
-function checkMatch() {
-  const [card1, card2] = flippedCards;
+    // Check-out handler
+    buttons.checkOut.addEventListener("click", () => {
+        const checkOutText = document.getElementById("check-out-text").value.trim();
+        if (!checkOutText) return alert("Vul je check-out reflectie in.");
+        reflections[currentDay].checkOut = checkOutText;
+        saveProgress();
+        showSection("sleep");
+    });
 
-  if (card1.cardData.pairId === card2.cardData.pairId) {
-    card1.card.classList.add("matched");
-    card2.card.classList.add("matched");
-    matchedPairs++;
-    console.log(`Matched pairs: ${matchedPairs}`);
-    updateProgressBar();
-  } else {
-    card1.card.classList.remove("flipped");
-    card2.card.classList.remove("flipped");
-  }
+    // Volgende dag
+    buttons.nextDay.addEventListener("click", () => {
+        if (currentDay < totalDays) {
+            currentDay++;
+            loadDayContent();
+            showSection("check-in");
+        } else {
+            alert("Gefeliciteerd! Je hebt alle 14 dagen voltooid!");
+        }
+    });
 
-  flippedCards = [];
-  boardLocked = false;
+    // Vorige dag
+    buttons.prevDay.addEventListener("click", () => {
+        if (currentDay > 1) {
+            currentDay--;
+            loadDayContent();
+            showSection("check-in");
+        }
+    });
 
-  if (matchedPairs === 10) {
-    endGame();
-  }
-}
+    // Reset de game
+    buttons.reset.addEventListener("click", () => {
+        localStorage.clear();
+        reflections = {};
+        currentDay = 1;
+        loadDayContent();
+        showSection("check-in");
+    });
 
-function updateProgressBar() {
-  const progress = (matchedPairs / 10) * 100;
-  document.getElementById("progress").style.width = `${progress}%`;
-}
-
-function endGame() {
-  alert("🎉 Alle paren gevonden!");
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-setupGame();
+    loadDayContent();
+    showSection("check-in");
+});
