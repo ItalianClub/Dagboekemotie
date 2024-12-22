@@ -3,13 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentDay = 1;
     let reflections = {}; // Opslag voor reflecties per dag
 
-    // Herstellen van de opgeslagen voortgang in localStorage
-    if (localStorage.getItem('currentDay')) {
-        currentDay = parseInt(localStorage.getItem('currentDay'));
-        reflections = JSON.parse(localStorage.getItem('reflections')) || {};
-    }
-
-    // Secties ophalen
+    // Zorg ervoor dat we de juiste secties ophalen
     const sections = {
         checkIn: document.getElementById("check-in-section"),
         analysis: document.getElementById("analysis-section"),
@@ -51,14 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Functie om secties te tonen
     const showSection = (id) => {
-        Object.values(sections).forEach(section => section.classList.add("hidden"));
+        // Verberg eerst alle secties
+        Object.values(sections).forEach((section) => section.classList.add("hidden"));
+        // Toon de gevraagde sectie
         sections[id].classList.remove("hidden");
-    };
-
-    // Sla de voortgang op in localStorage
-    const saveProgress = () => {
-        localStorage.setItem('currentDay', currentDay);
-        localStorage.setItem('reflections', JSON.stringify(reflections));
     };
 
     // Laad de inhoud voor de dag
@@ -67,16 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("day-number").textContent = currentDay;
     };
 
-    // Check-in button handler
+    // Knoppenfunctionaliteit
     buttons.checkIn.addEventListener("click", () => {
         const input = document.getElementById("check-in-text").value.trim();
-        if (!input) return alert("Vul je reflectie in.");
+        if (!input) {
+            alert("Vul je reflectie in.");
+            return;
+        }
         reflections[currentDay] = { checkIn: input };
         saveProgress();
         showSection("analysis");
     });
 
-    // Emotie analyse button handler
     buttons.emotionSubmit.addEventListener("click", () => {
         const selectedEmotions = Array.from(document.getElementById("emotion-select").selectedOptions).map(option => option.value);
         const selectedBodyParts = Array.from(document.getElementById("body-select").selectedOptions).map(option => option.value);
@@ -87,26 +79,25 @@ document.addEventListener("DOMContentLoaded", () => {
         showSection("emotion-summary");
     });
 
-    // Ga naar de oefening sectie
     buttons.proceedToExercise.addEventListener("click", () => {
         showSection("exercise");
     });
 
-    // Voltooi de oefening
     buttons.completeExercise.addEventListener("click", () => {
         showSection("check-out");
     });
 
-    // Check-out handler
     buttons.checkOut.addEventListener("click", () => {
         const checkOutText = document.getElementById("check-out-text").value.trim();
-        if (!checkOutText) return alert("Vul je check-out reflectie in.");
+        if (!checkOutText) {
+            alert("Vul je check-out reflectie in.");
+            return;
+        }
         reflections[currentDay].checkOut = checkOutText;
         saveProgress();
         showSection("sleep");
     });
 
-    // Volgende dag
     buttons.nextDay.addEventListener("click", () => {
         if (currentDay < totalDays) {
             currentDay++;
@@ -117,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Vorige dag
     buttons.prevDay.addEventListener("click", () => {
         if (currentDay > 1) {
             currentDay--;
@@ -126,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Reset de game
     buttons.reset.addEventListener("click", () => {
         localStorage.clear();
         reflections = {};
