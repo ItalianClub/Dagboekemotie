@@ -19,8 +19,6 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-top: 20px;
-    overflow-y: auto; /* Voorkom dat de inhoud uit het scherm valt */
 }
 
 /* Koppen */
@@ -141,12 +139,6 @@ textarea:focus, select:focus {
 #progress-indicator span {
     font-weight: bold;
     color: #9c1925;
-}
-
-/* Analyse styling */
-#summary-description {
-    font-size: 1.2em;
-    line-height: 1.6;
 }
 
 /* Activiteit Indicatoren */
