@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = Array(totalDays).fill(null).map(() => ({
         checkIn: "",
+        emotions: [],
+        bodyParts: [],
         analysis: "",
         checkOut: "",
     }));
@@ -65,48 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
         { title: "Eindreflectie", description: "Kijk terug op de afgelopen 14 dagen. Wat heb je geleerd over je emoties en lichaam?" },
     ];
 
-    const checkOutPrompts = [
-        "Wat heb je vandaag geleerd over je lichaam en emoties?",
-        "Welke momenten brachten je rust of spanning?",
-        "Wat voelde je tijdens de oefening? Waar in je lichaam merkte je dat?",
-        "Welke gedachten hielpen je vandaag vooruit?",
-        "Hoe kun je morgen een moment van rust creëren?",
-        "Welke emoties herken je nu beter? Hoe voel je dat?",
-        "Wat gaf je vandaag een glimlach? Hoe voelde dat?",
-        "Waar voel je nu rust in je lichaam? Hoe kwam dat?",
-        "Welke situaties maakten je emotioneel? Waar voelde je dat?",
-        "Wat bracht je vandaag kalmte? Hoe kun je dat vaker oproepen?",
-        "Wat leerde je vandaag over je ademhaling?",
-        "Welke beweging voelde goed vandaag? Waarom?",
-        "Wat was het meest waardevolle inzicht van vandaag?",
-        "Hoe heeft deze dag je geholpen om te groeien?",
-    ];
-
-    const generateAnalysis = (inputText) => {
-        const lowerInput = inputText.toLowerCase();
-        if (lowerInput.includes("spanning") || lowerInput.includes("schouders")) {
-            return {
-                psychological: "Spanning in je schouders wijst vaak op stress of verantwoordelijkheid. Overweeg hoe je deze spanning kunt loslaten.",
-                physical: "Probeer lichte stretchoefeningen om de spanning in je schouders te verlichten.",
-            };
-        }
-        if (lowerInput.includes("blij") || lowerInput.includes("gelukkig")) {
-            return {
-                psychological: "Je ervaart blijdschap, een teken dat je iets doet wat je energie geeft.",
-                physical: "Blijdschap ontspant je lichaam. Let op hoe je ademhaling kalmer wordt.",
-            };
-        }
-        return {
-            psychological: "Je gevoelens zijn divers en vragen om reflectie. Wat is de sterkste emotie vandaag?",
-            physical: "Doe een volledige lichaamsscan om spanning of ontspanning in je lichaam te herkennen.",
-        };
+    const updateProgressBar = () => {
+        const progressBar = document.getElementById("progress-bar-inner");
+        progressBar.style.width = `${(currentDay / totalDays) * 100}%`;
     };
 
-    const loadDayContent = () => {
-        document.getElementById("check-in-prompt").textContent = checkInPrompts[currentDay - 1];
-        document.getElementById("exercise-title").textContent = exercises[currentDay - 1].title;
-        document.getElementById("exercise-description").textContent = exercises[currentDay - 1].description;
-        document.getElementById("check-out-prompt").textContent = checkOutPrompts[currentDay - 1];
+    const validateSelections = () => {
+        const emotionsSelected = document.querySelectorAll('#emotion-choices input:checked');
+        const bodyPartsSelected = document.querySelectorAll('#body-choices input:checked');
+
+        if (emotionsSelected.length === 0 || bodyPartsSelected.length === 0) {
+            alert('Kies ten minste één emotie en een locatie van spanning.');
+            return false;
+        }
+        return true;
     };
 
     const showSection = (sectionId) => {
@@ -114,24 +88,44 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById(sectionId).classList.remove("hidden");
     };
 
-    buttons.startGame.addEventListener("click", () => showSection("checkIn"));
+    const loadDayContent = () => {
+        document.getElementById("check-in-prompt").textContent = checkInPrompts[currentDay - 1];
+        document.getElementById("exercise-title").textContent = exercises[currentDay - 1].title;
+        document.getElementById("exercise-description").textContent = exercises[currentDay - 1].description;
+    };
+
+    buttons.startGame.addEventListener("click", () => {
+        updateProgressBar();
+        showSection("checkIn");
+    });
+
     buttons.aboutGame.addEventListener("click", () => showSection("about"));
     buttons.backToStart.addEventListener("click", () => showSection("start"));
 
     buttons.checkIn.addEventListener("click", () => {
-        const inputText = document.getElementById("check-in-text").value.trim();
-        if (inputText) {
-            const analysis = generateAnalysis(inputText);
-            document.getElementById("analysis-result").innerHTML = `
-                <h3>Psychologische Analyse:</h3>
-                <p>${analysis.psychological}</p>
-                <h3>Fysieke Analyse:</h3>
-                <p>${analysis.physical}</p>
-            `;
-            showSection("analysis");
-        } else {
-            alert("Vul je check-in in om verder te gaan.");
-        }
+        const checkInText = document.getElementById("check-in-text").value.trim();
+        if (!checkInText || !validateSelections()) return;
+
+        const selectedEmotions = [...document.querySelectorAll('#emotion-choices input:checked')].map(input => input.value);
+        const selectedBodyParts = [...document.querySelectorAll('#body-choices input:checked')].map(input => input.value);
+
+        data[currentDay - 1] = {
+            ...data[currentDay - 1],
+            checkIn: checkInText,
+            emotions: selectedEmotions,
+            bodyParts: selectedBodyParts,
+        };
+
+        const analysis = `
+            <h3>Emotionele Analyse:</h3>
+            <p>Je hebt de volgende emoties aangegeven: ${selectedEmotions.join(", ")}.</p>
+            <h3>Fysieke Analyse:</h3>
+            <p>Je voelt spanning in: ${selectedBodyParts.join(", ")}.</p>
+            <p>Tip: Probeer een ademhalingsoefening om spanning los te laten.</p>
+        `;
+
+        document.getElementById("analysis-result").innerHTML = analysis;
+        showSection("analysis");
     });
 
     buttons.next.addEventListener("click", () => showSection("exercise"));
@@ -139,17 +133,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buttons.checkOut.addEventListener("click", () => {
         const checkOutText = document.getElementById("check-out-text").value.trim();
-        if (checkOutText) {
-            showSection("sleep");
-        } else {
+        if (!checkOutText) {
             alert("Vul je check-out in om verder te gaan.");
+            return;
         }
+
+        data[currentDay - 1] = {
+            ...data[currentDay - 1],
+            checkOut: checkOutText,
+        };
+
+        showSection("sleep");
     });
 
     buttons.nextDay.addEventListener("click", () => {
         if (currentDay < totalDays) {
             currentDay++;
             loadDayContent();
+            updateProgressBar();
             showSection("checkIn");
         } else {
             alert("Gefeliciteerd! Je hebt alle 14 dagen voltooid!");
@@ -160,8 +161,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentDay > 1) {
             currentDay--;
             loadDayContent();
+            updateProgressBar();
             showSection("checkIn");
         }
+    });
+
+    buttons.reset.addEventListener("click", () => {
+        currentDay = 1;
+        data.forEach(day => {
+            day.checkIn = "";
+            day.emotions = [];
+            day.bodyParts = [];
+            day.analysis = "";
+            day.checkOut = "";
+        });
+        loadDayContent();
+        updateProgressBar();
+        showSection("start");
     });
 
     loadDayContent();
