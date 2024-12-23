@@ -51,9 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Functie om secties te tonen
     const showSection = (id) => {
-        // Verberg eerst alle secties
         Object.values(sections).forEach((section) => section.classList.add("hidden"));
-        // Toon de gevraagde sectie
         sections[id].classList.remove("hidden");
     };
 
@@ -78,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.emotionSubmit.addEventListener("click", () => {
         const selectedEmotions = Array.from(document.getElementById("emotion-select").selectedOptions).map(option => option.value);
         const selectedBodyParts = Array.from(document.getElementById("body-select").selectedOptions).map(option => option.value);
-        
+
         reflections[currentDay].emotions = selectedEmotions;
         reflections[currentDay].bodyParts = selectedBodyParts;
         saveProgress();
@@ -91,3 +89,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buttons.completeExercise.addEventListener("click", () => {
         showSection("check-out");
+    });
+
+    buttons.checkOut.addEventListener("click", () => {
+        const checkOutText = document.getElementById("check-out-text").value.trim();
+        if (!checkOutText) {
+            alert("Vul je check-out reflectie in.");
+            return;
+        }
+        reflections[currentDay].checkOut = checkOutText;
+        saveProgress();
+        showSection("sleep");
+    });
+
+    buttons.nextDay.addEventListener("click", () => {
+        if (currentDay < totalDays) {
+            currentDay++;
+            loadDayContent();
+            showSection("check-in");
+        } else {
+            alert("Gefeliciteerd! Je hebt alle 14 dagen voltooid!");
+        }
+    });
+
+    buttons.prevDay.addEventListener("click", () => {
+        if (currentDay > 1) {
+            currentDay--;
+            loadDayContent();
+            showSection("check-in");
+        }
+    });
+
+    buttons.reset.addEventListener("click", () => {
+        localStorage.clear();
+        reflections = {};
+        currentDay = 1;
+        loadDayContent();
+        showSection("check-in");
+    });
+
+    // Sla de voortgang op in localStorage
+    const saveProgress = () => {
+        localStorage.setItem('currentDay', currentDay);
+        localStorage.setItem('reflections', JSON.stringify(reflections));
+    };
+
+    // Laad de voortgang uit localStorage bij het starten van de game
+    if (localStorage.getItem('currentDay')) {
+        currentDay = parseInt(localStorage.getItem('currentDay'));
+        reflections = JSON.parse(localStorage.getItem('reflections')) || {};
+        loadDayContent();
+        showSection("check-in");
+    } else {
+        loadDayContent();
+        showSection("check-in");
+    }
+});
