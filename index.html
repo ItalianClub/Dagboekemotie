@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatietherapie Challenge</title>
+    <title>Emotionele Challenge</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,14 +15,14 @@
 
         <!-- Startpagina -->
         <div id="start-section" class="section">
-            <h1>Welkom bij de Relatietherapie Challenge</h1>
-            <p>Leer je emoties kennen, communiceer veilig, en laat spanning los.</p>
+            <h1>Welkom bij de Emotionele Challenge</h1>
+            <p>Leer je emoties herkennen, verwoorden en loslaten.</p>
             <button id="start-game-btn" class="btn">Start de Challenge ➡️</button>
         </div>
 
         <!-- Check-in Sectie -->
         <div id="check-in-section" class="section hidden">
-            <h2>Check-in: Hoe voel je je?</h2>
+            <h2>Check-in: Hoe voel je je vandaag?</h2>
             <textarea id="check-in-text" placeholder="Beschrijf je gevoelens en fysieke toestand..."></textarea>
             <h3>Kies je emoties:</h3>
             <div id="emotion-choices">
@@ -50,11 +50,32 @@
             <button id="next-btn" class="btn">Ga naar Advies ➡️</button>
         </div>
 
+        <!-- Advies Sectie -->
+        <div id="advice-section" class="section hidden">
+            <h2>Advies op Basis van je Analyse</h2>
+            <div id="advice-result"></div>
+            <button id="exercise-btn" class="btn">Ga naar Oefeningen ➡️</button>
+        </div>
+
         <!-- Oefeningen Sectie -->
         <div id="exercise-section" class="section hidden">
             <h2 id="exercise-title"></h2>
             <p id="exercise-description"></p>
             <button id="complete-exercise-btn" class="btn">Oefening Voltooien ✅</button>
+        </div>
+
+        <!-- Check-out Sectie -->
+        <div id="check-out-section" class="section hidden">
+            <h2>Check-out: Reflecteer op je dag</h2>
+            <textarea id="check-out-text" placeholder="Wat heb je geleerd en ervaren vandaag?"></textarea>
+            <button id="check-out-btn" class="btn">Opslaan en Naar Slaaproutine ➡️</button>
+        </div>
+
+        <!-- Slaaproutine Sectie -->
+        <div id="sleep-section" class="section hidden">
+            <h2>Ontspanning voor het Slapen Gaan</h2>
+            <p>Doe een ademhalingsoefening: adem in, houd vast, adem uit, en ontspan je lichaam.</p>
+            <button id="next-day-btn" class="btn">Volgende Dag ➡️</button>
         </div>
     </div>
 
