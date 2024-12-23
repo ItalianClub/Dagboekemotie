@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatietherapie Game</title>
+    <title>Relatietherapie Challenge</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,28 +16,27 @@
 
         <!-- Startpagina -->
         <div id="start-section" class="section">
-            <h1>Welkom bij de Relatietherapie Game ❤️</h1>
-            <p>Ontwikkel je emotionele vaardigheden, leer je gevoelens herkennen en reflecteer dagelijks.</p>
-            <button id="start-game-btn" class="btn">Start de Game ➡️</button>
-            <button id="about-game-btn" class="btn">Over de Game ❓</button>
+            <h1>Welkom bij de Relatietherapie Challenge ❤️</h1>
+            <p>Ontwikkel veilige communicatie, leer emoties herkennen en los spanning op.</p>
+            <button id="start-game-btn" class="btn">Start de Challenge ➡️</button>
+            <button id="about-game-btn" class="btn">Over de Challenge ❓</button>
         </div>
 
         <!-- Overzichtpagina -->
         <div id="about-section" class="section hidden">
-            <h2>Over de Game</h2>
-            <p>Deze game helpt je om:</p>
+            <h2>Over de Challenge</h2>
+            <p>Deze challenge helpt je:</p>
             <ul>
-                <li>Je emoties te herkennen en verwoorden.</li>
-                <li>Fysieke spanningen te koppelen aan emotionele signalen.</li>
-                <li>Dagelijks te reflecteren en beter te communiceren.</li>
+                <li>Veilig te communiceren over gevoelens.</li>
+                <li>Je emoties te herkennen en te verwerken.</li>
+                <li>Fysieke spanning los te laten en balans te vinden.</li>
             </ul>
             <button id="back-to-start-btn" class="btn">Terug naar Start ⬅️</button>
         </div>
 
         <!-- Check-in Sectie -->
         <div id="check-in-section" class="section hidden">
-            <h2>Check-in: Reflecteer op je dag</h2>
-            <p id="check-in-prompt">Hoe voel je je vandaag? Beschrijf eventuele fysieke spanningen.</p>
+            <h2>Check-in: Hoe voel je je?</h2>
             <textarea id="check-in-text" placeholder="Beschrijf je gevoelens en fysieke toestand..."></textarea>
             <h3>Kies je emoties:</h3>
             <div id="emotion-choices">
@@ -55,45 +54,44 @@
                 <label><input type="checkbox" value="Hoofd"> Hoofd</label>
                 <label><input type="checkbox" value="Rug"> Rug</label>
             </div>
-            <button id="check-in-btn" class="btn">Check-in Voltooien ✅</button>
+            <button id="check-in-btn" class="btn">Analyseer mijn Invoer ✅</button>
         </div>
 
         <!-- Analyse Sectie -->
         <div id="analysis-section" class="section hidden">
             <h2>Analyse van je Check-in</h2>
-            <div id="analysis-result">
-                <p>We analyseren je invoer om je inzicht te geven in je emoties en fysieke spanningen.</p>
-            </div>
-            <button id="next-btn" class="btn">Ga naar de Oefening ➡️</button>
+            <div id="analysis-result"></div>
+            <button id="next-btn" class="btn">Ga naar Advies ➡️</button>
         </div>
 
-        <!-- Oefening Sectie -->
+        <!-- Advies Sectie -->
+        <div id="advice-section" class="section hidden">
+            <h2>Advies op Basis van je Analyse</h2>
+            <div id="advice-result"></div>
+            <button id="exercise-btn" class="btn">Ga naar Oefeningen ➡️</button>
+        </div>
+
+        <!-- Oefeningen Sectie -->
         <div id="exercise-section" class="section hidden">
-            <h2 id="exercise-title">Oefening van de Dag</h2>
+            <h2>Oefening van de Dag</h2>
             <p id="exercise-description"></p>
             <button id="complete-exercise-btn" class="btn">Oefening Voltooien ✅</button>
         </div>
 
         <!-- Check-out Sectie -->
         <div id="check-out-section" class="section hidden">
-            <h2>Check-out: Reflecteer op je dag</h2>
-            <p id="check-out-prompt">Wat heb je geleerd over je emoties en lichaam vandaag?</p>
-            <textarea id="check-out-text" placeholder="Wat heb je geleerd en ervaren vandaag?"></textarea>
-            <button id="check-out-btn" class="btn">Check-out Voltooien ✅</button>
+            <h2>Check-out: Reflecteer op je Dag</h2>
+            <textarea id="check-out-text" placeholder="Wat heb je vandaag geleerd?"></textarea>
+            <button id="check-out-btn" class="btn">Opslaan en Naar Slaaproutine ➡️</button>
         </div>
 
-        <!-- Slaap Sectie -->
+        <!-- Slaaproutine -->
         <div id="sleep-section" class="section hidden">
-            <h2>Slaapoefening: Kom tot rust</h2>
-            <p>Neem 5 minuten om bewust te ademen. Adem diep in en langzaam uit.</p>
+            <h2>Ontspanning voor het Slapen Gaan</h2>
+            <p>Adem diep in, houd 4 seconden vast, en adem uit in 6 seconden. Herhaal dit 5 keer.</p>
             <button id="next-day-btn" class="btn">Volgende Dag ➡️</button>
         </div>
 
-        <!-- Navigatie -->
-        <div class="navigation">
-            <button id="prev-day-btn" class="btn">← Vorige Dag</button>
-            <button id="reset-btn" class="btn reset-btn">Reset Alles 🔄</button>
-        </div>
     </div>
     <script src="script.js"></script>
 </body>
