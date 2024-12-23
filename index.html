@@ -1,191 +1,100 @@
-/* Algemene styling */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f7f9fc;
-    margin: 0;
-    padding: 0;
-    color: #333;
-    line-height: 1.6;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatietherapie Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
 
-.container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
+        <!-- Voortgangsbalk -->
+        <div id="progress-bar">
+            <div id="progress-bar-inner"></div>
+        </div>
 
-/* Voortgangsbalk */
-#progress-bar {
-    width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
+        <!-- Startpagina -->
+        <div id="start-section" class="section">
+            <h1>Welkom bij de Relatietherapie Game ❤️</h1>
+            <p>Ontwikkel je emotionele vaardigheden, leer je gevoelens herkennen en reflecteer dagelijks.</p>
+            <button id="start-game-btn" class="btn">Start de Game ➡️</button>
+            <button id="about-game-btn" class="btn">Over de Game ❓</button>
+        </div>
 
-#progress-bar-inner {
-    height: 20px;
-    width: 0;
-    background-color: #9c1925;
-    transition: width 0.3s ease-in-out;
-}
+        <!-- Overzichtpagina -->
+        <div id="about-section" class="section hidden">
+            <h2>Over de Game</h2>
+            <p>Deze game helpt je om:</p>
+            <ul>
+                <li>Je emoties te herkennen en verwoorden.</li>
+                <li>Fysieke spanningen te koppelen aan emotionele signalen.</li>
+                <li>Dagelijks te reflecteren en beter te communiceren.</li>
+            </ul>
+            <button id="back-to-start-btn" class="btn">Terug naar Start ⬅️</button>
+        </div>
 
-/* Secties */
-.section {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
+        <!-- Check-in Sectie -->
+        <div id="check-in-section" class="section hidden">
+            <h2>Check-in: Reflecteer op je dag</h2>
+            <p id="check-in-prompt">Hoe voel je je vandaag? Beschrijf eventuele fysieke spanningen.</p>
+            <textarea id="check-in-text" placeholder="Beschrijf je gevoelens en fysieke toestand..."></textarea>
+            <h3>Kies je emoties:</h3>
+            <div id="emotion-choices">
+                <label><input type="checkbox" value="Blij"> Blij</label>
+                <label><input type="checkbox" value="Boos"> Boos</label>
+                <label><input type="checkbox" value="Verdrietig"> Verdrietig</label>
+                <label><input type="checkbox" value="Gefrustreerd"> Gefrustreerd</label>
+                <label><input type="checkbox" value="Angstig"> Angstig</label>
+            </div>
+            <h3>Waar voel je spanning?</h3>
+            <div id="body-choices">
+                <label><input type="checkbox" value="Schouders"> Schouders</label>
+                <label><input type="checkbox" value="Nek"> Nek</label>
+                <label><input type="checkbox" value="Buik"> Buik</label>
+                <label><input type="checkbox" value="Hoofd"> Hoofd</label>
+                <label><input type="checkbox" value="Rug"> Rug</label>
+            </div>
+            <button id="check-in-btn" class="btn">Check-in Voltooien ✅</button>
+        </div>
 
-.section:not(.hidden) {
-    display: block;
-    opacity: 1;
-}
+        <!-- Analyse Sectie -->
+        <div id="analysis-section" class="section hidden">
+            <h2>Analyse van je Check-in</h2>
+            <div id="analysis-result">
+                <p>We analyseren je invoer om je inzicht te geven in je emoties en fysieke spanningen.</p>
+            </div>
+            <button id="next-btn" class="btn">Ga naar de Oefening ➡️</button>
+        </div>
 
-/* Koppen */
-h1 {
-    font-size: 2.5em;
-    color: #4a90e2;
-    margin-bottom: 20px;
-}
+        <!-- Oefening Sectie -->
+        <div id="exercise-section" class="section hidden">
+            <h2 id="exercise-title">Oefening van de Dag</h2>
+            <p id="exercise-description"></p>
+            <button id="complete-exercise-btn" class="btn">Oefening Voltooien ✅</button>
+        </div>
 
-h2 {
-    font-size: 1.8em;
-    color: #555;
-    margin-bottom: 15px;
-}
+        <!-- Check-out Sectie -->
+        <div id="check-out-section" class="section hidden">
+            <h2>Check-out: Reflecteer op je dag</h2>
+            <p id="check-out-prompt">Wat heb je geleerd over je emoties en lichaam vandaag?</p>
+            <textarea id="check-out-text" placeholder="Wat heb je geleerd en ervaren vandaag?"></textarea>
+            <button id="check-out-btn" class="btn">Check-out Voltooien ✅</button>
+        </div>
 
-h3 {
-    font-size: 1.5em;
-    color: #777;
-    margin-bottom: 10px;
-}
+        <!-- Slaap Sectie -->
+        <div id="sleep-section" class="section hidden">
+            <h2>Slaapoefening: Kom tot rust</h2>
+            <p>Neem 5 minuten om bewust te ademen. Adem diep in en langzaam uit.</p>
+            <button id="next-day-btn" class="btn">Volgende Dag ➡️</button>
+        </div>
 
-/* Paragrafen */
-p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-}
-
-/* Multiple-choice vragen */
-#emotion-choices, #body-choices {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-#emotion-choices label, #body-choices label {
-    background-color: #f4f4f4;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#emotion-choices input[type="checkbox"], #body-choices input[type="checkbox"] {
-    display: none;
-}
-
-#emotion-choices label:hover, #body-choices label:hover {
-    background-color: #dfe8f7;
-    border-color: #4a90e2;
-}
-
-#emotion-choices input[type="checkbox"]:checked + label, 
-#body-choices input[type="checkbox"]:checked + label {
-    background-color: #4a90e2;
-    color: #fff;
-    border-color: #4a90e2;
-}
-
-/* Tekstvelden */
-textarea {
-    width: 100%;
-    height: 120px;
-    font-size: 1.1em;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease-in-out;
-}
-
-textarea:focus {
-    border-color: #4a90e2;
-    outline: none;
-}
-
-/* Knoppen */
-.btn {
-    display: inline-block;
-    padding: 12px 20px;
-    font-size: 1em;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #357ab7;
-    transform: scale(1.05);
-}
-
-.btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Resetknop styling */
-.reset-btn {
-    background-color: #f39c12;
-}
-
-.reset-btn:hover {
-    background-color: #e67e22;
-}
-
-/* Analyse sectie stijl */
-#analysis-result {
-    text-align: left;
-    background-color: #f7f7f7;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-#analysis-result h3 {
-    color: #9c1925;
-    margin-bottom: 10px;
-}
-
-/* Responsief ontwerp */
-@media (max-width: 600px) {
-    .container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    .btn {
-        padding: 10px 15px;
-        font-size: 0.9em;
-    }
-}
+        <!-- Navigatie -->
+        <div class="navigation">
+            <button id="prev-day-btn" class="btn">← Vorige Dag</button>
+            <button id="reset-btn" class="btn reset-btn">Reset Alles 🔄</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
