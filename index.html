@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotieherkenning Game</title>
+    <title>14-Dagen Emotie Challenge Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Emotieherkenning Game</h1>
+        <h1>14-Dagen Emotie Challenge Game</h1>
         <p id="progress-indicator">Dag <span id="day-number">1</span> van 14</p>
-        <p id="intro-text">Sta stil bij je emoties en ontdek wat ze je proberen te vertellen.</p>
+        <p id="intro-text">Sta stil bij je emoties en ontdek wat ze je proberen te vertellen. Vul elke dag je reflectie in!</p>
 
         <!-- Check-in Sectie -->
         <div id="check-in-section" class="section">
-            <h2>Check-in</h2>
-            <p id="check-in-prompt">Hoe voel je je vandaag? Beschrijf je emoties en fysieke toestand.</p>
-            <textarea id="check-in-text" placeholder="Beschrijf hier je gevoelens..." required></textarea>
+            <h2>Check-in: Hoe voel je je vandaag?</h2>
+            <textarea id="check-in-text" placeholder="Beschrijf hier je emoties en waar je ze in je lichaam voelt..." required></textarea>
             <button id="check-in-btn" class="btn">Voltooi Check-in</button>
         </div>
 
@@ -24,17 +23,15 @@
         <div id="analysis-section" class="section hidden">
             <h2>Wat voel je en waar voel je het?</h2>
             <form id="emotion-quiz">
-                <label>Welke emoties herken je het meest in jezelf? (Selecteer er meerdere)</label>
+                <label>Welke emoties herken je vandaag? (Meerdere opties mogelijk)</label>
                 <select id="emotion-select" multiple>
                     <option value="blij">Blij</option>
                     <option value="verdrietig">Verdrietig</option>
                     <option value="boos">Boos</option>
                     <option value="angstig">Angstig</option>
                     <option value="onzeker">Onzeker</option>
-                    <option value="schuld">Schuld</option>
                     <option value="jaloers">Jaloers</option>
                     <option value="trots">Trots</option>
-                    <option value="enthousiast">Enthousiast</option>
                 </select>
                 <label>Waar in je lichaam voel je deze emoties?</label>
                 <select id="body-select" multiple>
@@ -42,10 +39,8 @@
                     <option value="borst">Borst</option>
                     <option value="buik">Buik</option>
                     <option value="schouders">Schouders</option>
-                    <option value="handen">Handen</option>
-                    <option value="benen">Benen</option>
                 </select>
-                <button type="button" id="emotion-submit" class="btn">Analyseer Emoties</button>
+                <button type="button" id="emotion-submit" class="btn">Submit Emoties</button>
             </form>
         </div>
 
@@ -53,28 +48,28 @@
         <div id="emotion-summary" class="section hidden">
             <h2>Samenvatting van je Emoties</h2>
             <p id="summary-description">Hier verschijnt een samenvatting van wat je hebt gevoeld en waar je dit hebt gevoeld.</p>
-            <button id="proceed-to-exercise" class="btn">Ga naar de Oefening</button>
+            <button id="proceed-to-exercise" class="btn">Ga naar Oefeningen</button>
         </div>
 
         <!-- Oefening Sectie -->
         <div id="exercise-section" class="section hidden">
-            <h2>Oefeningen voor Emotie en Lichaam</h2>
-            <p id="exercise-title">Titel van de oefening</p>
-            <p id="exercise-description">Beschrijving van de oefening</p>
-            <button id="complete-exercise-btn" class="btn">Voltooi Oefening</button>
+            <h2>Oefening van de Dag</h2>
+            <p id="exercise-title">Ademhalingsoefening</p>
+            <p id="exercise-description">Concentreer je op je ademhaling en adem rustig in en uit voor 5 minuten.</p>
+            <button id="complete-exercise-btn" class="btn">Oefening Voltooid</button>
         </div>
 
         <!-- Check-out Sectie -->
         <div id="check-out-section" class="section hidden">
             <h2>Check-out</h2>
-            <textarea id="check-out-text" placeholder="Reflecteer: Wat heb je vandaag geleerd?" required></textarea>
+            <textarea id="check-out-text" placeholder="Wat heb je vandaag geleerd over je emoties?" required></textarea>
             <button id="check-out-btn" class="btn">Voltooi Check-out</button>
         </div>
 
         <!-- Slaap Sectie -->
         <div id="sleep-section" class="section hidden">
             <h2>Ontspanningsoefening</h2>
-            <p>Neem 5 minuten om diep en rustig te ademen. Concentreer je op spanning in je lichaam en laat deze bewust los.</p>
+            <p>Neem 5 minuten om rustig in en uit te ademen en voel je lichaam ontspannen.</p>
             <button id="next-day-btn" class="btn">Volgende Dag</button>
         </div>
 
