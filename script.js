@@ -1,177 +1,168 @@
-/* Algemene styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const totalDays = 14;
+    let currentDay = 1;
 
-.container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
+    const sections = {
+        start: document.getElementById("start-section"),
+        about: document.getElementById("about-section"),
+        checkIn: document.getElementById("check-in-section"),
+        analysis: document.getElementById("analysis-section"),
+        exercise: document.getElementById("exercise-section"),
+        checkOut: document.getElementById("check-out-section"),
+        sleep: document.getElementById("sleep-section"),
+    };
 
-/* Secties */
-.section {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
+    const buttons = {
+        startGame: document.getElementById("start-game-btn"),
+        aboutGame: document.getElementById("about-game-btn"),
+        backToStart: document.getElementById("back-to-start-btn"),
+        checkIn: document.getElementById("check-in-btn"),
+        next: document.getElementById("next-btn"),
+        completeExercise: document.getElementById("complete-exercise-btn"),
+        checkOut: document.getElementById("check-out-btn"),
+        nextDay: document.getElementById("next-day-btn"),
+        prevDay: document.getElementById("prev-day-btn"),
+        reset: document.getElementById("reset-btn"),
+    };
 
-.section:not(.hidden) {
-    display: block;
-    opacity: 1;
-}
+    const data = Array(totalDays).fill(null).map(() => ({
+        checkIn: "",
+        analysis: "",
+        checkOut: "",
+    }));
 
-/* Koppen */
-h1 {
-    font-size: 2.5em;
-    color: #9c1925;
-    margin-bottom: 20px;
-}
+    const checkInPrompts = [
+        "Hoe voel je je nu? Beschrijf eventuele fysieke spanningen.",
+        "Welke emotie overheerst vandaag? Waar voel je dit in je lichaam?",
+        "Wat heeft je vandaag geraakt en hoe voelde dat?",
+        "Welke kleur beschrijft je stemming vandaag? Waarom?",
+        "Waar voel je spanning in je lichaam?",
+        "Hoe voelt je ademhaling op dit moment?",
+        "Voel je ergens tintelingen? Waar precies?",
+        "Welke gedachten hebben vandaag het meeste door je hoofd gespookt?",
+        "Waar voel je je energiek? Wat gaf je energie?",
+        "Welke situatie bracht vandaag stress? Waar voelde je dat?",
+        "Wat heeft je vandaag gelukkig gemaakt? Hoe voelde dat?",
+        "Welke emoties heb je vandaag genegeerd? Waar merk je dat aan?",
+        "Hoe voelt je lichaam op dit moment als een geheel?",
+        "Wat zou je lichaam je vandaag vertellen als het kon praten?",
+    ];
 
-h2 {
-    font-size: 1.8em;
-    color: #444;
-    margin-bottom: 15px;
-}
+    const exercises = [
+        { title: "Ademruimte nemen", description: "Neem 3 minuten de tijd om je ademhaling te observeren. Hoe voel je je na deze oefening?" },
+        { title: "Emotionele woordenlijst", description: "Kies 3 emoties uit een lijst en beschrijf waar je ze voelt in je lichaam." },
+        { title: "Spanning en ontspanning", description: "Span je schouders 5 seconden aan en laat los. Wat voel je tijdens deze verandering?" },
+        { title: "Innerlijke dialoog", description: "Schrijf een gesprek op tussen jouw ‘kalme ik’ en jouw ‘gestreste ik’." },
+        { title: "Triggers onderzoeken", description: "Schrijf een situatie op die een sterke emotie opriep. Hoe reageerde je?" },
+        { title: "Dankbaarheid reflectie", description: "Noem 3 dingen waar je vandaag dankbaar voor bent en beschrijf hoe ze je laten voelen." },
+        { title: "Kleur je emotie", description: "Kies een kleur die jouw stemming vandaag vertegenwoordigt. Waarom koos je deze kleur?" },
+        { title: "Spiegelwerk", description: "Kijk 5 minuten in de spiegel en observeer je gezichtsuitdrukking. Wat zegt deze over jouw emoties?" },
+        { title: "Adem en observeer", description: "Doe een diepe ademhalingsoefening. Wat merk je op in je lichaam?" },
+        { title: "Zelfcompassie brief", description: "Schrijf een brief aan jezelf waarin je jouw emoties erkent en jezelf steunt." },
+        { title: "Emotionele kaart", description: "Teken een lichaamssilhouet en markeer waar je emoties voelt." },
+        { title: "Reflectieve vragen", description: "Schrijf 3 vragen die je jezelf kunt stellen bij een sterke emotie." },
+        { title: "Stress loslaten", description: "Identificeer één ding dat vandaag stress veroorzaakte en schrijf hoe je het kunt loslaten." },
+        { title: "Eindreflectie", description: "Kijk terug op de afgelopen 14 dagen. Wat heb je geleerd over je emoties en lichaam?" },
+    ];
 
-h3 {
-    font-size: 1.5em;
-    color: #555;
-    margin-bottom: 10px;
-}
+    const checkOutPrompts = [
+        "Wat heb je vandaag geleerd over je lichaam en emoties?",
+        "Welke momenten brachten je rust of spanning?",
+        "Wat voelde je tijdens de oefening? Waar in je lichaam merkte je dat?",
+        "Welke gedachten hielpen je vandaag vooruit?",
+        "Hoe kun je morgen een moment van rust creëren?",
+        "Welke emoties herken je nu beter? Hoe voel je dat?",
+        "Wat gaf je vandaag een glimlach? Hoe voelde dat?",
+        "Waar voel je nu rust in je lichaam? Hoe kwam dat?",
+        "Welke situaties maakten je emotioneel? Waar voelde je dat?",
+        "Wat bracht je vandaag kalmte? Hoe kun je dat vaker oproepen?",
+        "Wat leerde je vandaag over je ademhaling?",
+        "Welke beweging voelde goed vandaag? Waarom?",
+        "Wat was het meest waardevolle inzicht van vandaag?",
+        "Hoe heeft deze dag je geholpen om te groeien?",
+    ];
 
-/* Paragrafen */
-p {
-    font-size: 1.2em;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+    const generateAnalysis = (inputText) => {
+        const lowerInput = inputText.toLowerCase();
+        if (lowerInput.includes("spanning") || lowerInput.includes("schouders")) {
+            return {
+                psychological: "Spanning in je schouders wijst vaak op stress of verantwoordelijkheid. Overweeg hoe je deze spanning kunt loslaten.",
+                physical: "Probeer lichte stretchoefeningen om de spanning in je schouders te verlichten.",
+            };
+        }
+        if (lowerInput.includes("blij") || lowerInput.includes("gelukkig")) {
+            return {
+                psychological: "Je ervaart blijdschap, een teken dat je iets doet wat je energie geeft.",
+                physical: "Blijdschap ontspant je lichaam. Let op hoe je ademhaling kalmer wordt.",
+            };
+        }
+        return {
+            psychological: "Je gevoelens zijn divers en vragen om reflectie. Wat is de sterkste emotie vandaag?",
+            physical: "Doe een volledige lichaamsscan om spanning of ontspanning in je lichaam te herkennen.",
+        };
+    };
 
-/* Lijsten */
-ul {
-    text-align: left;
-    margin: 20px auto;
-    max-width: 600px;
-}
+    const loadDayContent = () => {
+        document.getElementById("check-in-prompt").textContent = checkInPrompts[currentDay - 1];
+        document.getElementById("exercise-title").textContent = exercises[currentDay - 1].title;
+        document.getElementById("exercise-description").textContent = exercises[currentDay - 1].description;
+        document.getElementById("check-out-prompt").textContent = checkOutPrompts[currentDay - 1];
+    };
 
-li {
-    font-size: 1em;
-    margin-bottom: 10px;
-}
+    const showSection = (sectionId) => {
+        Object.values(sections).forEach(section => section.classList.add("hidden"));
+        document.getElementById(sectionId).classList.remove("hidden");
+    };
 
-/* Tekstvelden */
-textarea {
-    width: 100%;
-    height: 120px;
-    font-size: 1.1em;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease-in-out;
-}
+    buttons.startGame.addEventListener("click", () => showSection("checkIn"));
+    buttons.aboutGame.addEventListener("click", () => showSection("about"));
+    buttons.backToStart.addEventListener("click", () => showSection("start"));
 
-textarea:focus {
-    border-color: #9c1925;
-    outline: none;
-}
+    buttons.checkIn.addEventListener("click", () => {
+        const inputText = document.getElementById("check-in-text").value.trim();
+        if (inputText) {
+            const analysis = generateAnalysis(inputText);
+            document.getElementById("analysis-result").innerHTML = `
+                <h3>Psychologische Analyse:</h3>
+                <p>${analysis.psychological}</p>
+                <h3>Fysieke Analyse:</h3>
+                <p>${analysis.physical}</p>
+            `;
+            showSection("analysis");
+        } else {
+            alert("Vul je check-in in om verder te gaan.");
+        }
+    });
 
-textarea.error {
-    border-color: red !important;
-}
+    buttons.next.addEventListener("click", () => showSection("exercise"));
+    buttons.completeExercise.addEventListener("click", () => showSection("checkOut"));
 
-/* Knoppen */
-.btn {
-    display: inline-block;
-    padding: 12px 20px;
-    font-size: 1em;
-    background-color: #9c1925;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-}
+    buttons.checkOut.addEventListener("click", () => {
+        const checkOutText = document.getElementById("check-out-text").value.trim();
+        if (checkOutText) {
+            showSection("sleep");
+        } else {
+            alert("Vul je check-out in om verder te gaan.");
+        }
+    });
 
-.btn:hover {
-    background-color: #b3212f;
-    transform: scale(1.05);
-}
+    buttons.nextDay.addEventListener("click", () => {
+        if (currentDay < totalDays) {
+            currentDay++;
+            loadDayContent();
+            showSection("checkIn");
+        } else {
+            alert("Gefeliciteerd! Je hebt alle 14 dagen voltooid!");
+        }
+    });
 
-.btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
+    buttons.prevDay.addEventListener("click", () => {
+        if (currentDay > 1) {
+            currentDay--;
+            loadDayContent();
+            showSection("checkIn");
+        }
+    });
 
-/* Resetknop styling */
-.reset-btn {
-    background-color: #f39c12;
-    color: white;
-}
-
-.reset-btn:hover {
-    background-color: #e67e22;
-}
-
-/* Navigatieknoppen */
-.navigation {
-    margin-top: 20px;
-    text-align: center;
-}
-
-/* Analyse sectie stijl */
-#analysis-result {
-    text-align: left;
-    background-color: #f7f7f7;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-#analysis-result h3 {
-    color: #9c1925;
-    margin-bottom: 10px;
-}
-
-/* Voortgangsindicator */
-#progress-indicator {
-    font-size: 1.2em;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-#progress-indicator span {
-    font-weight: bold;
-    color: #9c1925;
-}
-
-/* Responsieve ontwerpaanpassingen */
-@media (max-width: 600px) {
-    .container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    .btn {
-        padding: 10px 15px;
-        font-size: 0.9em;
-    }
-}
+    loadDayContent();
+});
