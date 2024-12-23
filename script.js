@@ -3,7 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentDay = 1;
     let reflections = {}; // Opslag voor reflecties per dag
 
-    // Zorg ervoor dat we de juiste secties ophalen
+    // Herstellen van de opgeslagen voortgang in localStorage
+    if (localStorage.getItem('currentDay')) {
+        currentDay = parseInt(localStorage.getItem('currentDay'));
+        reflections = JSON.parse(localStorage.getItem('reflections')) || {};
+    }
+
+    // Secties ophalen
     const sections = {
         checkIn: document.getElementById("check-in-section"),
         analysis: document.getElementById("analysis-section"),
@@ -85,45 +91,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buttons.completeExercise.addEventListener("click", () => {
         showSection("check-out");
-    });
-
-    buttons.checkOut.addEventListener("click", () => {
-        const checkOutText = document.getElementById("check-out-text").value.trim();
-        if (!checkOutText) {
-            alert("Vul je check-out reflectie in.");
-            return;
-        }
-        reflections[currentDay].checkOut = checkOutText;
-        saveProgress();
-        showSection("sleep");
-    });
-
-    buttons.nextDay.addEventListener("click", () => {
-        if (currentDay < totalDays) {
-            currentDay++;
-            loadDayContent();
-            showSection("check-in");
-        } else {
-            alert("Gefeliciteerd! Je hebt alle 14 dagen voltooid!");
-        }
-    });
-
-    buttons.prevDay.addEventListener("click", () => {
-        if (currentDay > 1) {
-            currentDay--;
-            loadDayContent();
-            showSection("check-in");
-        }
-    });
-
-    buttons.reset.addEventListener("click", () => {
-        localStorage.clear();
-        reflections = {};
-        currentDay = 1;
-        loadDayContent();
-        showSection("check-in");
-    });
-
-    loadDayContent();
-    showSection("check-in");
-});
