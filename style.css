@@ -1,71 +1,81 @@
 /* Algemene styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
     color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
 .container {
     max-width: 900px;
-    width: 100%;
+    margin: 50px auto;
     padding: 20px;
-    background: white;
+    background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    overflow-y: auto;
+}
+
+/* Secties */
+.section {
+    display: none;
+}
+
+.section:not(.hidden) {
+    display: block;
 }
 
 /* Koppen */
 h1 {
-    color: #9c1925;
     font-size: 2.5em;
-    margin-bottom: 10px;
+    color: #9c1925;
+    margin-bottom: 20px;
 }
 
 h2 {
-    color: #555;
     font-size: 1.8em;
+    color: #555;
     margin-bottom: 15px;
 }
 
-/* Intro tekst */
-#intro-text {
+/* Paragrafen */
+p {
     font-size: 1.2em;
-    margin-bottom: 25px;
-    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
-/* Tekstvelden en dropdowns */
-textarea, select {
+/* Tekstvelden */
+textarea {
     width: 100%;
-    margin-bottom: 20px;
-    padding: 12px;
+    height: 120px;
     font-size: 1.1em;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    resize: none;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease-in-out;
 }
 
-textarea:focus, select:focus {
+textarea:focus {
     border-color: #9c1925;
     outline: none;
 }
 
+textarea.error {
+    border-color: red !important;
+}
+
 /* Knoppen */
 .btn {
-    padding: 12px 20px;
-    margin: 10px;
+    padding: 10px 20px;
     background-color: #9c1925;
     color: white;
     border: none;
     border-radius: 5px;
+    margin: 10px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
@@ -75,82 +85,33 @@ textarea:focus, select:focus {
     transform: scale(1.05);
 }
 
+/* Resetknop */
 .reset-btn {
-    background: #f39c12;
+    background-color: #f39c12;
+    color: white;
 }
 
 .reset-btn:hover {
-    background: #e67e22;
+    background-color: #e67e22;
 }
 
-/* Secties */
-.section.hidden {
-    display: none;
+/* Navigatie */
+.navigation {
+    margin-top: 20px;
 }
 
-.section {
-    margin-bottom: 20px;
+/* Validatie */
+textarea.error {
+    border-color: red;
 }
 
-/* Samenvatting stijl */
-#emotion-summary {
-    text-align: left;
-    padding: 20px;
-    background-color: #f7f7f7;
-    border-radius: 10px;
-    margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-#emotion-summary h2 {
-    color: #9c1925;
-}
-
-/* Responsieve layout */
+/* Responsief ontwerp */
 @media (max-width: 600px) {
     .container {
         padding: 10px;
     }
 
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
     .btn {
-        padding: 10px 15px;
         font-size: 0.9em;
     }
-
-    textarea, select {
-        font-size: 1em;
-    }
-}
-
-/* Progressie-indicator styling */
-#progress-indicator {
-    font-size: 1.2em;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-#progress-indicator span {
-    font-weight: bold;
-    color: #9c1925;
-}
-
-/* Activiteit Indicatoren */
-#check-in-text, #check-out-text {
-    height: 150px;
-    resize: vertical;
-}
-
-/* Boodschap bij succes of waarschuwing */
-.error-message {
-    color: red;
-    font-size: 1.1em;
-    margin-top: 20px;
 }
